@@ -1,0 +1,17 @@
+{
+	"http_headers":[
+	{
+		"Accept":"text/html",
+			"Accept-Encoding":"gzip",
+			"Accept-Language":"en-US",
+			"Authorization":"Basic YWxhZGRpbjpvcGVuc2VzYW1l",
+			"Cache-Control":"no-cache",
+			"Cookie":"admin=true",
+			"User-Agent":"Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+			"If-Modified-Since":"Wed, 21 Oct 2015 07:28:00 GMT",
+			"Referer":"http://localhost",
+			"Connection":"keep-alive",
+			"Range":"bytes=0-499"
+	}
+	]
+}
