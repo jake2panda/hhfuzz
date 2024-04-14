@@ -1,17 +1,13 @@
 # hhfuzz
 
-#about
+# About
 
 This is a multi threaded http header fuzzer
 
-#How does it work
+# How to use it?
 
-It work by checking the response of http request with http headers
+Very simple just run the program and see the instructions 
 
-#how to use it
+# Notice
 
-Very simple just run the program and instructions 
-
-#notice
-
-Remember the specifying the json file. it basically contain the default http request headers
+Remember the json file. it basically contain the default http request headers
