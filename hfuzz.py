@@ -17,18 +17,13 @@ def banner():
    ,-.(.____.),-.  
   ( \ \ '--' / / )
    \ \ / ,. \ / /
-    ) '| || |' ( mrf
+    ) '| || |' ( hhf
 OoO'- OoO''OoO -'OoO
 
 
 
 """)
 	pass
-
-
-def usage():
-	print("Usage : hfuzz.py -u <url> -f <headers_files>")
-	sys.exit(-1)
 
 
 def make_payload(header_filename, header_name=None,header_value=None):
@@ -74,58 +69,69 @@ def prepare_request(urls, headers):
 	data = {'key': 'value'}
 	udata = {'key': 'updated_value'}
 	for url in urls:
-		res_get = requests.get(url, headers)
-		res_post = requests.post(url, data=data)
-		res_put = requests.put(url, data=udata)
-		res_delete = requests.delete(url)
-		res_patch = requests.patch(url, data=data)
+		res_get = requests.get(url, headers=headers)
+		res_post = requests.post(url, data=data, headers=headers)
+		res_put = requests.put(url, data=udata, headers=headers)
+		res_delete = requests.delete(url, headers=headers)
+		res_patch = requests.patch(url, data=data, headers=headers)
 
 
+	get_count = 1
+	post_count = 1
+	put_count = 1
+	delete_count = 1
+	patch_count = 1
 
-	with open("output.txt", "wb") as f:
+	with open("output.txt", "w") as f:
 		for ka, dr in headers.items():
 			if dr in res_get.text:
-				f.write("GET--HEADERS")
-				f.write("suspicious header name : {} value : {}".format(str(ka), str(dr)))
-				f.write("  <<<<END-GET>>>>  ")
+				f.write("GET--HEADERS\n")
+				f.write("[{}] suspicious header name : {} value : {}\n".format(str(get_count), str(ka), str(dr)))
+				get_count += 1
+				f.write("<<<<END-GET>>>>  \n")
 			elif dr in res_post.text:
-				f.write("POST--HEADERS")
-				f.write("suspicious header name : {} value : {}".format(str(ka), str(dr)))
-				f.write("  <<<<END-POST>>>>  ")
+				f.write("POST--HEADERS\n")
+				f.write("[{}] suspicious header name : {} value : {}\n".format(str(post_count), str(ka), str(dr)))
+				post_count += 1
+				f.write("<<<<END-POST>>>>  \n")
 			elif dr in res_put.text:
-		 		f.write("PUT--HEADERS")
-		 		f.write("suspicious header name : {} value : {}".format(str(ka), str(dr)))
-		 		f.write("  <<<<END-PUT>>>>  ")
+		 		f.write("PUT--HEADERS\n")
+		 		f.write("[{}] suspicious header name : {} value : {}\n".format(str(put_count), str(ka), str(dr)))
+		 		put_count += 1
+		 		f.write("<<<<END-PUT>>>>  \n")
 			elif dr in res_delete:
-				f.write("DELETE--HEADERS")
-				f.write("suspicious header name : {} value : {}".format(str(ka), str(dr)))
-				f.write("  <<<<END-DELETE>>>>  ")
+				f.write("DELETE--HEADERS\n")
+				f.write("[{}] suspicious header name : {} value : {}\n".format(str(delete_count), str(ka), str(dr)))
+				delete_count += 1
+				f.write("<<<<END-DELETE>>>>  \n")
 			elif dr in res_patch:
 				f.write("PATCH--HEADERS")
-				f.write("suspicious header name : {} value : {}".format(str(ka), str(dr)))
-				f.write("  <<<<END-PATCH>>>>  ")
-		f.write(b"-=========END========-")
+				f.write("[{}] suspicious header name : {} value : {}".format(str(patch_count), str(ka), str(dr)))
+				patch_count += 1
+				f.write("<<<<END-PATCH>>>>  ")
+		f.write("                      ")
+		f.write("-=========END========-")
 
 			
 
 def main():
-	parser = argparse.ArgumentParser(prog="H-FUZZER", description="Example command line interface", epilog="http header fuzzer")
+
+	global payload_headers
+
+	parser = argparse.ArgumentParser(prog="H-FUZZER", description="Example command line interface", epilog="HTTP Headers Fuzzer")
 
 	parser.add_argument("-u", "--url", help="target url", required=True)
 	parser.add_argument("-p", "--pathfile", help="give me url path file", required=True)
 	parser.add_argument("-f", "--filename", help="http header file json format", required=True)
-	parser.add_argument("-v", "--header_value", help="specify custome header value", required=True)
-	parser.add_argument('-n', "--header_name", help="specify header name", required=True)
+	parser.add_argument("-v", "--header_value", help="specify custome header value", required=False)
+	parser.add_argument("-n", "--header_name", help="specify header name", required=False)
 	parser.add_argument("-t", "--thread", help="specify number of thread")
 
 	args = parser.parse_args()
-
-	if len(sys.argv) < 4:
-		usage()
 	banner()
 
 	print("[*] Starting hfuzzer.....")
-	time.sleep(2)
+	time.sleep(1)
 	print("[*] Preparing urls....")
 
 	time.sleep(1)
@@ -139,6 +145,8 @@ def main():
 	time.sleep(1)
 	if args.header_name and args.header_value:
 		payload_headers = make_payload(args.filename, args.header_name, args.header_value)
+	else:
+		payload_headers = make_payload(args.filename)
 
 	print("[*] Starting fuzzing....")
 
