@@ -1,7 +1,7 @@
 {
 	"http_headers":[
 	{
-		"Accept":"text/html",
+			"Accept":"text/html",
 			"Accept-Encoding":"gzip",
 			"Accept-Language":"en-US",
 			"Authorization":"Basic YWxhZGRpbjpvcGVuc2VzYW1l",
