@@ -8,7 +8,8 @@ This is a multi threaded http header fuzzer
 
 Very simple just run the program and see the instructions
 
-## Small Demo 
+## Small Demo
+![alt text](https://github.com/jake2panda/hhfuzz/blob/main/Screen%20Shot%202024-04-28%20at%208.54.19%20PM.png)
 
 
 ## Notice
